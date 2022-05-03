@@ -18,8 +18,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/contacts', function()
+
+//Contacts
+
+Route::get('/contacts', function(Request $request)
 {
+    dump($request->query('name')); //pasar por query params info
     return 'Get All Contacts';
 });
 
@@ -30,7 +34,8 @@ Route::get('/contact/{id}', function($id)
 
 Route::post('/contact', function(Request $request)
 {
-    dump($request->all());
+    dump($request->all()); //pasar informacion por body y ver por console log todo
+    dump($request->all()['name']); //pasar informacion por body y ver por console log una clave de la request
     return 'You create a new contact';
 });
 
