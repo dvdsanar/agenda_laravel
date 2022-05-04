@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,16 +11,35 @@ class ContactController extends Controller
     public function getAllContacts (Request $request)
     {
     // dump($request->query('name')); //pasar por query params info
-        $contacts = DB::table('contacts')->where('id_user','=', 7)->get()->toArray();
+        //$contacts = DB::table('contacts')->where('id_user','=', 7)->get()->toArray();
+
+        $contacts = Contact::where('id_user', 7)->get()->toArray();
+
+        if (empty($contacts)) {
+            return response()->json([
+                "success" => "No hay contactos"
+            ],
+            202);
+        }
         
-        return $contacts;
+        return response()->json($contacts, 200);
     }
 
     public function getContactById ($id)
     {
         // $contact = DB::table('contacts')->where('id_user','=', 1)->where('id','=', $id)->get()->toArray();
-        $contact = DB::table('contacts')->where('id_user','=', 7)->find($id);
-        return $contact;
+        //$contact = DB::table('contacts')->where('id_user','=', 7)->find($id);
+
+        $contact = Contact::where('id_user', 1)->where('id', $id)->first();
+
+        if (empty($contact)) {
+            return response()->json([
+                "error" => "Este contacto no existe"
+            ],
+            404);
+        }
+
+        return response()->json($contact, 200);
     }
 
     public function postContact (Request $request)
