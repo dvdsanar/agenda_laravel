@@ -58,16 +58,50 @@ class ContactController extends Controller
         $newContact->save();
 
         
-        return response()->json(["data"=>$newContact, "success"=>"Contacto Creado"], 200);;
+        return response()->json(["data"=>$newContact, "success"=>"Contacto Creado"], 200);
     }
 
-    public function putContact ($id)
+    public function putContact (Request $request, $id)
     {
-        return 'You update contact: '. $id;
+        $contact = Contact::where('id', $id)->where('id_user', 1)->first();
+
+        if (empty($contact)) {
+            return response()->json([
+                "error" => "Este contacto no existe"
+            ],
+            404);
+        }
+        
+        if (isset($request->name))
+            $contact->name = $request->name;
+
+        if (isset($request->surname))
+            $contact->surname = $request->surname;
+
+        if (isset($request->phone_number))
+            $contact->phone_number = $request->phone_number;
+
+        if (isset($request->email))
+            $contact->email = $request->email;
+
+        $contact->save();
+
+        return response()->json(["data"=>$contact, "success"=>"Contacto Actualizado"], 200);
     }
 
     public function deleteContact ($id)
     {
-        return 'You delete contact: '. $id;
+        $contact = Contact::where('id', $id)->where('id_user', 1)->first();
+
+        if (empty($contact)) {
+            return response()->json([
+                "error" => "Este contacto no existe"
+            ],
+            404);
+        }
+
+        $contact->delete();
+
+        return response()->json([ "success"=>"Has eliminado el contacto: ".$id], 200);
     }
 }
