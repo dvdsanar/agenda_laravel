@@ -44,9 +44,21 @@ class ContactController extends Controller
 
     public function postContact (Request $request)
     {
-        dump($request->all()); //pasar informacion por body y ver por console log todo
-        dump($request->all()['name']); //pasar informacion por body y ver por console log una clave de la request
-        return 'You create a new contact';
+        //dump($request->all()); //pasar informacion por body y ver por console log todo
+        //dump($request->all()['name']); //pasar informacion por body y ver por console log una clave de la request
+        
+        $newContact = new Contact();
+
+        $newContact->name = $request->name;
+        $newContact->surname = $request->surname;
+        $newContact->phone_number = $request->phone_number;
+        $newContact->email = $request->email;
+        $newContact->id_user = $request->id_user;
+
+        $newContact->save();
+
+        
+        return response()->json(["data"=>$newContact, "success"=>"Contacto Creado"], 200);;
     }
 
     public function putContact ($id)
