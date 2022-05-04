@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
@@ -47,6 +48,18 @@ class ContactController extends Controller
         //dump($request->all()); //pasar informacion por body y ver por console log todo
         //dump($request->all()['name']); //pasar informacion por body y ver por console log una clave de la request
         
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'surname' => 'required|string',
+            'phone_number' => 'required|string',
+            'email' => 'required|email'
+        ]);
+ 
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+
         $newContact = new Contact();
 
         $newContact->name = $request->name;
