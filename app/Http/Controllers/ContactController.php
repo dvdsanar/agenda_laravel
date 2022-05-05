@@ -17,7 +17,8 @@ class ContactController extends Controller
             // dump($request->query('name')); //pasar por query params info
             //$contacts = DB::table('contacts')->where('id_user','=', 7)->get()->toArray();
 
-            $contacts = Contact::where('id_user', 7)->get()->toArray();
+            $userId = auth()->user()->id;
+            $contacts = Contact::where('id_user', $userId)->get()->toArray();
 
             if (empty($contacts)) {
                 return response()->json([
@@ -40,7 +41,8 @@ class ContactController extends Controller
             // $contact = DB::table('contacts')->where('id_user','=', 1)->where('id','=', $id)->get()->toArray();
             //$contact = DB::table('contacts')->where('id_user','=', 7)->find($id);
 
-            $contact = Contact::where('id_user', 1)->where('id', $id)->first();
+            $userId = auth()->user()->id;
+            $contact = Contact::where('id_user', $userId)->where('id', $id)->first();
 
             if (empty($contact)) {
                 return response()->json([
@@ -74,19 +76,19 @@ class ContactController extends Controller
                 return response()->json($validator->errors(), 400);
             }
 
+            $userId = auth()->user()->id;
+            $newContact = new Contact();
 
-            // $newContact = new Contact();
+            $newContact->name = $request->name;
+            $newContact->surname = $request->surname;
+            $newContact->phone_number = $request->phone_number;
+            $newContact->email = $request->email;
+            $newContact->id_user = $request->$userId;
 
-            // $newContact->name = $request->name;
-            // $newContact->surname = $request->surname;
-            // $newContact->phone_number = $request->phone_number;
-            // $newContact->email = $request->email;
-            // $newContact->id_user = $request->id_user;
+            $newContact->save();
 
-            // $newContact->save();
-
-            $contact = $request->all();
-            $newContact = Contact::create($contact);
+            // $contact = $request->all();
+            // $newContact = Contact::create($contact);
 
             Log::info('You Post a new contac');
             return response()->json(["data"=>$newContact, "success"=>"Contacto Creado"], 200);
@@ -100,7 +102,8 @@ class ContactController extends Controller
     {
         try {
             Log::info('Init Update a contact');
-            $contact = Contact::where('id', $id)->where('id_user', 1)->first();
+            $userId = auth()->user()->id;
+            $contact = Contact::where('id', $id)->where('id_user', $userId)->first();
 
             if (empty($contact)) {
                 return response()->json([
@@ -134,7 +137,8 @@ class ContactController extends Controller
     {
         try {
             Log::info('Init Delete a contact');
-            $contact = Contact::where('id', $id)->where('id_user', 1)->first();
+            $userId = auth()->user()->id;
+            $contact = Contact::where('id', $id)->where('id_user', $userId)->first();
 
             if (empty($contact)) {
                 return response()->json([
