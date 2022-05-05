@@ -31,8 +31,13 @@ Route::group([
 
 //Contacts
 
-Route::get('/contacts', [ContactController::class, 'getAllContacts']);
-Route::get('/contact/{id}', [ContactController::class, 'getContactById']);
-Route::post('/contact', [ContactController::class, 'postContact']);
-Route::put('/contact/{id}', [ContactController::class, 'putContact']);
-Route::delete('/contact/{id}', [ContactController::class, 'deleteContact']);
+Route::group([
+    'middleware' => 'jwt.auth' 
+], function(){
+    Route::get('/contacts', [ContactController::class, 'getAllContacts']);
+    Route::get('/contact/{id}', [ContactController::class, 'getContactById']);
+    Route::post('/contact', [ContactController::class, 'postContact']);
+    Route::put('/contact/{id}', [ContactController::class, 'putContact']);
+    Route::delete('/contact/{id}', [ContactController::class, 'deleteContact']);
+});
+
