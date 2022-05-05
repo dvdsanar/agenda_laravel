@@ -11,19 +11,23 @@ class ContactController extends Controller
 {
     public function getAllContacts (Request $request)
     {
-    // dump($request->query('name')); //pasar por query params info
-        //$contacts = DB::table('contacts')->where('id_user','=', 7)->get()->toArray();
+        try {
+            // dump($request->query('name')); //pasar por query params info
+            //$contacts = DB::table('contacts')->where('id_user','=', 7)->get()->toArray();
 
-        $contacts = Contact::where('id_user', 7)->get()->toArray();
+            $contacts = Contact::where('id_user', 7)->get()->toArray();
 
-        if (empty($contacts)) {
-            return response()->json([
-                "success" => "No hay contactos"
-            ],
-            202);
+            if (empty($contacts)) {
+                return response()->json([
+                    "success" => "No hay contactos"
+                ],
+                202);
+            }
+            
+            return response()->json($contacts, 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => "ups"], 500);
         }
-        
-        return response()->json($contacts, 200);
     }
 
     public function getContactById ($id)
