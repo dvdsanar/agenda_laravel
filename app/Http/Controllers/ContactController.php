@@ -83,7 +83,7 @@ class ContactController extends Controller
             $newContact->surname = $request->surname;
             $newContact->phone_number = $request->phone_number;
             $newContact->email = $request->email;
-            $newContact->id_user = $request->$userId;
+            $newContact->id_user = $userId;
 
             $newContact->save();
 
