@@ -36,6 +36,7 @@ class ContactController extends Controller
     public function getContactById ($id)
     {
         try {
+            Log::info('Init Get contacts by ID');
             // $contact = DB::table('contacts')->where('id_user','=', 1)->where('id','=', $id)->get()->toArray();
             //$contact = DB::table('contacts')->where('id_user','=', 7)->find($id);
 
@@ -47,9 +48,10 @@ class ContactController extends Controller
                 ],
                 404);
             }
-
+            Log::info('You Get the contacts by ID');
             return response()->json($contact, 200);
         } catch (\Throwable $th) {
+            Log::error('Ha ocurrido un error -> '.$th->getMessage());
             return response()->json(["error" => "ups"], 500);
         }
     }
@@ -57,6 +59,7 @@ class ContactController extends Controller
     public function postContact (Request $request)
     {
         try {
+            Log::info('Init Post a new contact');
             //dump($request->all()); //pasar informacion por body y ver por console log todo
             //dump($request->all()['name']); //pasar informacion por body y ver por console log una clave de la request
             
@@ -82,9 +85,10 @@ class ContactController extends Controller
 
             $newContact->save();
 
-            
+            Log::info('You Post a new contac');
             return response()->json(["data"=>$newContact, "success"=>"Contacto Creado"], 200);
         } catch (\Throwable $th) {
+            Log::error('Ha ocurrido un error -> '.$th->getMessage());
             return response()->json(["error" => "ups"], 500);
         }
     }
@@ -92,6 +96,7 @@ class ContactController extends Controller
     public function putContact (Request $request, $id)
     {
         try {
+            Log::info('Init Update a contact');
             $contact = Contact::where('id', $id)->where('id_user', 1)->first();
 
             if (empty($contact)) {
@@ -114,9 +119,10 @@ class ContactController extends Controller
                 $contact->email = $request->email;
 
             $contact->save();
-
+            Log::info('You Update a contac');
             return response()->json(["data"=>$contact, "success"=>"Contacto Actualizado"], 200);
         } catch (\Throwable $th) {
+            Log::error('Ha ocurrido un error -> '.$th->getMessage());
             return response()->json(["error" => "ups"], 500);
         }
     }
@@ -124,6 +130,7 @@ class ContactController extends Controller
     public function deleteContact ($id)
     {
         try {
+            Log::info('Init Delete a contact');
             $contact = Contact::where('id', $id)->where('id_user', 1)->first();
 
             if (empty($contact)) {
@@ -134,9 +141,10 @@ class ContactController extends Controller
             }
 
             $contact->delete();
-
+            Log::info('You Delete a contac');
             return response()->json([ "success"=>"Has eliminado el contacto: ".$id], 200);
         } catch (\Throwable $th) {
+            Log::error('Ha ocurrido un error -> '.$th->getMessage());
             return response()->json(["error" => "ups"], 500);
         }
     }
