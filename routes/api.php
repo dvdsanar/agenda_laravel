@@ -34,7 +34,7 @@ Route::group([
 Route::group([
     'middleware' => 'jwt.auth' 
 ], function(){
-    Route::get('/contacts', [ContactController::class, 'getAllContacts']);
+    Route::get('/contacts', [ContactController::class, 'getAllContacts'])->middleware('isUserActive');
     Route::get('/contact/{id}', [ContactController::class, 'getContactById']);
     Route::post('/contact', [ContactController::class, 'postContact']);
     Route::put('/contact/{id}', [ContactController::class, 'putContact']);
