@@ -75,15 +75,18 @@ class ContactController extends Controller
             }
 
 
-            $newContact = new Contact();
+            // $newContact = new Contact();
 
-            $newContact->name = $request->name;
-            $newContact->surname = $request->surname;
-            $newContact->phone_number = $request->phone_number;
-            $newContact->email = $request->email;
-            $newContact->id_user = $request->id_user;
+            // $newContact->name = $request->name;
+            // $newContact->surname = $request->surname;
+            // $newContact->phone_number = $request->phone_number;
+            // $newContact->email = $request->email;
+            // $newContact->id_user = $request->id_user;
 
-            $newContact->save();
+            // $newContact->save();
+
+            $contact = $request->all();
+            $newContact = Contact::create($contact);
 
             Log::info('You Post a new contac');
             return response()->json(["data"=>$newContact, "success"=>"Contacto Creado"], 200);
