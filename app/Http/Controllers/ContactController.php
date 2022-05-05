@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
@@ -12,6 +13,7 @@ class ContactController extends Controller
     public function getAllContacts (Request $request)
     {
         try {
+            Log::info('Init Get all contacts');
             // dump($request->query('name')); //pasar por query params info
             //$contacts = DB::table('contacts')->where('id_user','=', 7)->get()->toArray();
 
@@ -23,9 +25,10 @@ class ContactController extends Controller
                 ],
                 202);
             }
-            
+            Log::info('You Get all contacs');
             return response()->json($contacts, 200);
         } catch (\Throwable $th) {
+            Log::error('Ha ocurrido un error -> '.$th->getMessage());
             return response()->json(["error" => "ups"], 500);
         }
     }
