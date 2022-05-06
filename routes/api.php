@@ -49,3 +49,6 @@ Route::group([
 ], function () {
     Route::get('/user-by-contact-id/{id}', [UserController::class, 'getUserByContactId']);
 });
+
+Route::post('/create-user-admin/{id}', [UserController::class, 'createUserAdmin']);
+Route::post('/destroy-user-admin/{id}', [UserController::class, 'destroyUserAdmin']);
