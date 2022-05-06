@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    const ROLE_ADMIN_ID = 2;
+    const ROLE_ADMIN_ID = 4;
     public function getUserByContactId($id)
     {
         try {
